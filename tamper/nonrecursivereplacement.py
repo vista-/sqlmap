@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 """
 Copyright (c) 2006-2015 sqlmap developers (http://sqlmap.org/)
 See the file 'doc/COPYING' for copying permission
@@ -37,5 +36,6 @@ def tamper(payload, **kwargs):
         for keyword in keywords:
             _ = random.randint(1, len(keyword) - 1)
             retVal = re.sub(r"(?i)\b%s\b" % keyword, "%s%s%s" % (keyword[:_], keyword, keyword[_:]), retVal)
-
+            if(re.sub(re.compile('|'.join(keywords.sorted(key=len))), retVal, "") != payload):
+                retVal = tamper(payload, kwargs)
     return retVal
